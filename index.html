@@ -3,1070 +3,727 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mahadev - Mobile Repair Parts & Combos</title>
+<title>FixZone India | Mobile Repair Center - Android & iPhone</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
   :root {
-    --bg: #f8fafc;
-    --surface: #ffffff;
-    --surface2: #f1f5f9;
-    --border: #e2e8f0;
-    --accent: #8b5cf6;
-    --accent-rgb: 139, 92, 246;
-    --accent2: #d946ef;
-    --accent2-rgb: 217, 70, 239;
-    --blue: #3b82f6;
-    --blue-rgb: 59, 130, 246;
-    --green: #10b981;
-    --green-rgb: 16, 185, 129;
-    --text: #0f172a;
-    --muted: #64748b;
-    --card-bg: #ffffff;
-    --header-bg: rgba(255,255,255,0.85);
-    --combo-header: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-    --grad: linear-gradient(135deg, #8b5cf6, #d946ef);
+    --blue: #1A56DB;
+    --blue-dark: #0E3A9A;
+    --blue-light: #EBF2FF;
+    --orange: #FF6B2B;
+    --orange-light: #FFF0EA;
+    --dark: #0D1117;
+    --dark2: #151B26;
+    --gray: #8892A4;
+    --light: #F7F9FC;
+    --white: #FFFFFF;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: #1A2235;
+    --text-muted: #9BA8BB;
   }
-
-  body.dark-theme {
-    --bg: #0b0f19;
-    --surface: #111827;
-    --surface2: #1f2937;
-    --border: #374151;
-    --text: #f8fafc;
-    --muted: #94a3b8;
-    --card-bg: #1e293b;
-    --header-bg: rgba(11,15,25,0.85);
-    --combo-header: linear-gradient(135deg, #1f2937, #111827);
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
 
   html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--dark); color: var(--white); overflow-x: hidden; }
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    overflow-x: hidden;
-    transition: background-color 0.35s ease, color 0.35s ease;
-  }
-  .part-card, .mini-card, .combo-card, .combo-price-row, .search-bar, .form-wrap, .form-group input, .form-group textarea, .form-group select, header, footer, .tabs button {
-    transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease, transform 0.2s;
-  }
-
-  /* ---- HEADER ---- */
-  header {
-    position: sticky; top: 0; z-index: 100;
-    background: var(--header-bg);
-    backdrop-filter: blur(18px);
-    border-bottom: 1px solid var(--border);
-    padding: 0 5vw;
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
-    height: 64px;
+    padding: 1rem 5%; background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
   }
-
-  .logo {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.5rem; font-weight: 800;
-    background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    text-decoration: none;
+  .logo { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--white); text-decoration: none; }
+  .logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--orange); color: var(--white); padding: 0.65rem 1.4rem;
+    border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.95rem;
+    transition: background 0.2s, transform 0.15s;
   }
+  .nav-cta:hover { background: #e55a1e; transform: translateY(-1px); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
+  .hamburger span { width: 24px; height: 2px; background: var(--white); border-radius: 2px; }
 
-  nav { display: flex; gap: 2rem; }
-  nav a {
-    color: var(--muted); text-decoration: none; font-size: .9rem; font-weight: 500;
-    transition: color .2s;
-  }
-  nav a:hover { color: var(--text); }
-
-  .btn {
-    display: inline-flex; align-items: center; gap: .4rem;
-    padding: .55rem 1.3rem;
-    border-radius: 8px;
-    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: .9rem;
-    cursor: pointer; border: none; transition: all .2s; text-decoration: none;
-  }
-  .btn-primary { background: var(--grad); color: #fff; }
-  .btn-primary:hover { opacity: .85; transform: translateY(-1px); }
-  .btn-ghost { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
-  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
-
-  .theme-toggle {
-    background: var(--surface2); border: 1px solid var(--border); color: var(--text);
-    width: 40px; height: 40px; border-radius: 10px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-    transition: all .2s;
-  }
-  .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* ---- HERO ---- */
+  /* HERO */
   .hero {
-    padding: 90px 5vw 70px;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
-    position: relative; overflow: hidden;
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 7rem 5% 4rem; position: relative; overflow: hidden;
+    background: radial-gradient(ellipse 80% 60% at 70% 50%, #0D2E6B 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 20% 80%, #3D1500 0%, transparent 50%),
+                var(--dark);
   }
-
-  .hero::before {
-    content: '';
-    position: absolute; top: -120px; right: -120px;
-    width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(var(--accent-rgb),.18) 0%, transparent 70%);
-    pointer-events: none;
+  .hero-content { max-width: 620px; z-index: 1; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,107,43,0.15); border: 1px solid rgba(255,107,43,0.3);
+    color: var(--orange); padding: 0.4rem 1rem; border-radius: 100px;
+    font-size: 0.85rem; font-weight: 500; margin-bottom: 1.5rem;
   }
-
-  .hero-eyebrow {
-    display: inline-block;
-    background: rgba(var(--accent-rgb),.12);
-    border: 1px solid rgba(var(--accent-rgb),.3);
-    color: var(--accent);
-    padding: .3rem .9rem;
-    border-radius: 999px;
-    font-size: .78rem; font-weight: 600; letter-spacing: .06em;
-    text-transform: uppercase; margin-bottom: 1.2rem;
+  .hero-badge::before { content: ''; width: 8px; height: 8px; background: var(--orange); border-radius: 50%; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(2.8rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.2rem; }
+  .hero h1 em { font-style: normal; color: var(--orange); }
+  .hero p { font-size: 1.15rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 2rem; max-width: 480px; }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--orange); color: var(--white); padding: 0.85rem 2rem;
+    border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 1rem;
+    transition: all 0.2s; border: none; cursor: pointer;
   }
-
-  .hero h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(2.2rem, 4vw, 3.4rem);
-    font-weight: 800; line-height: 1.1;
-    margin-bottom: 1.2rem;
+  .btn-primary:hover { background: #e55a1e; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,43,0.35); }
+  .btn-outline {
+    background: transparent; color: var(--white); padding: 0.85rem 2rem;
+    border-radius: 10px; text-decoration: none; font-weight: 600; font-size: 1rem;
+    border: 1px solid rgba(255,255,255,0.25); transition: all 0.2s; cursor: pointer;
   }
-
-  .hero h1 span { background: var(--grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-  .hero p { color: var(--muted); line-height: 1.7; font-size: 1.05rem; margin-bottom: 2rem; }
-
-  .hero-stats {
-    display: flex; gap: 2rem; margin-top: 1rem;
-    padding-top: 2rem; border-top: 1px solid var(--border);
-  }
-
-  .stat { }
-  .stat-num { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--accent); }
-  .stat-label { font-size: .78rem; color: var(--muted); }
-
-  /* Hero right - floating cards */
+  .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.07); }
+  .hero-stats { display: flex; gap: 2.5rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; color: var(--white); }
+  .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
   .hero-visual {
-    display: flex; flex-direction: column; gap: 1rem;
-    position: relative;
+    position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+    width: 420px; height: 480px; display: flex; align-items: center; justify-content: center;
   }
-
-  .mini-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 14px; padding: 1rem 1.2rem;
-    display: flex; align-items: center; gap: 1rem;
-    animation: floatUp .5s ease both;
+  .phone-mockup {
+    width: 200px; background: var(--card-bg); border-radius: 32px;
+    border: 2px solid rgba(255,255,255,0.12); padding: 20px 16px;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5); position: relative; z-index: 2;
+    animation: float 4s ease-in-out infinite;
   }
-
-  .mini-card:nth-child(2) { animation-delay: .1s; margin-left: 1.5rem; }
-  .mini-card:nth-child(3) { animation-delay: .2s; }
-
-  @keyframes floatUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
-
-  .mini-icon {
-    width: 44px; height: 44px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.3rem; flex-shrink: 0;
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
+  .phone-screen { background: var(--dark); border-radius: 20px; aspect-ratio: 9/16; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+  .phone-icon { font-size: 2.5rem; }
+  .phone-text { font-size: 0.75rem; color: var(--text-muted); text-align: center; }
+  .tool-card {
+    position: absolute; background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 14px; padding: 12px 16px; font-size: 0.8rem;
+    display: flex; align-items: center; gap: 10px; white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
   }
+  .tool-card.t1 { top: 15%; left: 0; animation: float 4s ease-in-out infinite 0.5s; }
+  .tool-card.t2 { bottom: 20%; right: 0; animation: float 4s ease-in-out infinite 1s; }
+  .tool-card.t3 { top: 55%; left: -10%; animation: float 4s ease-in-out infinite 1.5s; }
+  .tc-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+  .tc-blue { background: rgba(26,86,219,0.2); }
+  .tc-orange { background: rgba(255,107,43,0.2); }
+  .tc-green { background: rgba(16,185,129,0.2); }
 
-  .mini-card-info { flex: 1; }
-  .mini-card-name { font-size: .88rem; font-weight: 600; }
-  .mini-card-sub { font-size: .75rem; color: var(--muted); }
+  /* SECTION BASE */
+  section { padding: 6rem 5%; }
+  .section-tag { display: inline-block; background: rgba(26,86,219,0.15); color: #6B9EFF; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.35rem 0.9rem; border-radius: 100px; margin-bottom: 1rem; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.2; margin-bottom: 1rem; }
+  .section-sub { color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; max-width: 560px; }
+  .section-header { text-align: center; }
+  .section-header .section-sub { margin: 0 auto; }
 
-  .price-pair { text-align: right; }
-  .price-orig { font-size: .82rem; font-weight: 700; color: var(--green); }
-  .price-local { font-size: .75rem; color: var(--muted); text-decoration: line-through; }
-
-  /* ---- SECTION TITLES ---- */
-  .section { padding: 70px 5vw; }
-  .section-head { text-align: center; margin-bottom: 3rem; }
-  .section-head h2 {
-    font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; margin-bottom: .5rem;
+  /* BRANDS */
+  .brands { background: var(--dark2); padding: 3rem 5%; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .brands-inner { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; justify-content: center; }
+  .brand-label { color: var(--text-muted); font-size: 0.85rem; margin-right: 1rem; }
+  .brand-chip {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    color: var(--text-muted); padding: 0.5rem 1.2rem; border-radius: 100px;
+    font-size: 0.9rem; font-weight: 500; transition: all 0.2s;
   }
-  .section-head p { color: var(--muted); }
+  .brand-chip:hover { background: rgba(255,255,255,0.1); color: var(--white); }
 
-  /* ---- SEARCH BAR ---- */
-  .search-bar {
-    max-width: 700px; margin: 0 auto 3rem;
-    display: flex; gap: .6rem;
-    background: var(--surface); border: 1.5px solid var(--border);
-    border-radius: 12px; padding: .5rem;
-  }
-
-  .search-bar select, .search-bar input {
-    background: transparent; border: none; outline: none;
-    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: .95rem; padding: .5rem .7rem;
-  }
-
-  .search-bar select { min-width: 140px; border-right: 1px solid var(--border); color: var(--muted); }
-  .search-bar input { flex: 1; }
-
-  /* ---- PARTS GRID ---- */
-  .parts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-    gap: 1.2rem;
-  }
-
-  .part-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px; padding: 1.4rem;
-    transition: border-color .2s, transform .2s;
-    cursor: pointer;
-  }
-
-  .part-card:hover { border-color: var(--accent); transform: translateY(-3px); }
-
-  .part-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem; }
-
-  .part-icon {
-    width: 52px; height: 52px; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.5rem;
-  }
-
-  .badge {
-    font-size: .7rem; font-weight: 600; padding: .2rem .6rem; border-radius: 6px;
-    letter-spacing: .04em;
-  }
-  .badge-original { background: rgba(var(--green-rgb),.12); color: var(--green); border: 1px solid rgba(var(--green-rgb),.25); }
-  .badge-local { background: rgba(var(--blue-rgb),.12); color: var(--blue); border: 1px solid rgba(var(--blue-rgb),.25); }
-  .badge-combo { background: rgba(var(--accent-rgb),.12); color: var(--accent); border: 1px solid rgba(var(--accent-rgb),.25); }
-
-  .part-name { font-weight: 700; font-size: 1rem; margin-bottom: .25rem; }
-  .part-model { font-size: .8rem; color: var(--muted); margin-bottom: 1rem; }
-
-  .price-row {
-    display: flex; gap: .8rem; align-items: flex-end; margin-bottom: 1rem;
-  }
-
-  .price-block { flex: 1; }
-  .price-label { font-size: .7rem; color: var(--muted); margin-bottom: .15rem; text-transform: uppercase; letter-spacing: .05em; }
-  .price-value { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; }
-  .price-value.orig { color: var(--green); }
-  .price-value.local { color: var(--blue); }
-
-  .part-actions { display: flex; gap: .5rem; }
-  .part-actions .btn { flex: 1; justify-content: center; font-size: .82rem; padding: .45rem .8rem; }
-
-  /* ---- COMBOS ---- */
-  .combos-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem;
-  }
-
-  .combo-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px; overflow: hidden;
-    transition: border-color .2s, transform .2s;
-  }
-  .combo-card:hover { border-color: var(--accent); transform: translateY(-3px); }
-
-  .combo-header {
-    background: var(--combo-header);
-    padding: 1.2rem 1.4rem;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-
-  .combo-name { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; }
-  .combo-count { font-size: .78rem; color: var(--muted); }
-
-  .combo-body { padding: 1.2rem 1.4rem; }
-
-  .combo-items { list-style: none; margin-bottom: 1rem; }
-  .combo-items li {
-    display: flex; align-items: center; gap: .5rem;
-    font-size: .83rem; color: var(--muted); padding: .3rem 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .combo-items li:last-child { border-bottom: none; }
-  .combo-items li::before { content: '✓'; color: var(--green); font-weight: 700; }
-
-  .combo-price-row {
-    display: flex; align-items: center; justify-content: space-between;
-    background: var(--surface); border-radius: 10px; padding: .8rem 1rem;
-  }
-
-  .combo-total { }
-  .combo-total-label { font-size: .72rem; color: var(--muted); }
-  .combo-total-val { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--accent); }
-
-  .combo-savings { font-size: .78rem; color: var(--green); font-weight: 600; }
-
-  /* ---- QUERY FORM ---- */
-  #query { background: var(--surface); }
-
-  .form-wrap {
-    max-width: 680px; margin: 0 auto;
+  /* SERVICES */
+  .services { background: var(--dark); }
+  .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 3.5rem; }
+  .service-card {
     background: var(--card-bg); border: 1px solid var(--border);
-    border-radius: 20px; padding: 2.5rem;
+    border-radius: 20px; padding: 2rem; transition: all 0.3s; cursor: pointer;
   }
+  .service-card:hover { border-color: rgba(26,86,219,0.5); transform: translateY(-6px); box-shadow: 0 24px 48px rgba(0,0,0,0.3); }
+  .service-icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 1.2rem; }
+  .si-blue { background: rgba(26,86,219,0.2); }
+  .si-orange { background: rgba(255,107,43,0.2); }
+  .si-green { background: rgba(16,185,129,0.2); }
+  .si-purple { background: rgba(139,92,246,0.2); }
+  .si-red { background: rgba(239,68,68,0.2); }
+  .si-teal { background: rgba(20,184,166,0.2); }
+  .service-card h3 { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem; }
+  .service-card p { color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.2rem; }
+  .service-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .stag { background: rgba(255,255,255,0.06); color: var(--text-muted); font-size: 0.78rem; padding: 3px 10px; border-radius: 100px; border: 1px solid var(--border); }
 
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-
-  .form-group { display: flex; flex-direction: column; gap: .5rem; }
-  .form-group.full { grid-column: 1/-1; }
-
-  .form-group label { font-size: .82rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
-
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    background: var(--surface); border: 1.5px solid var(--border);
-    border-radius: 10px; padding: .75rem 1rem;
-    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: .95rem;
-    outline: none; transition: border-color .2s;
-  }
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus { border-color: var(--accent); }
-
-  .form-group textarea { resize: vertical; min-height: 100px; }
-  .form-group select option { background: var(--surface2); }
-
-  /* Parts selector in form */
-  .parts-selector {
-    display: flex; flex-wrap: wrap; gap: .5rem;
-  }
-
-  .parts-chip {
-    display: flex; align-items: center; gap: .4rem;
-    padding: .4rem .8rem; border-radius: 8px;
-    border: 1.5px solid var(--border);
-    font-size: .8rem; font-weight: 500;
-    cursor: pointer; transition: all .2s; user-select: none;
-    color: var(--muted);
-  }
-  .parts-chip.selected {
-    border-color: var(--accent); color: var(--accent);
-    background: rgba(var(--accent-rgb),.1);
-  }
-
-  .form-submit { margin-top: 1.5rem; text-align: center; }
-
-  /* ---- TOAST ---- */
-  .toast {
-    position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
-    background: var(--green); color: #fff;
-    padding: 1rem 1.5rem; border-radius: 12px;
-    font-weight: 600; font-size: .9rem;
-    display: flex; align-items: center; gap: .6rem;
-    transform: translateY(100px); opacity: 0;
-    transition: all .35s cubic-bezier(.34,1.56,.64,1);
+  /* HOW IT WORKS */
+  .how { background: var(--dark2); }
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin-top: 3.5rem; position: relative; }
+  .steps-grid::before {
+    content: ''; position: absolute; top: 36px; left: 10%; right: 10%;
+    height: 2px; background: linear-gradient(90deg, transparent, rgba(26,86,219,0.4), rgba(255,107,43,0.4), transparent);
     pointer-events: none;
   }
-  .toast.show { transform: none; opacity: 1; }
-
-  /* ---- FOOTER ---- */
-  footer {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    padding: 3rem 5vw 1.5rem;
+  .step-card { text-align: center; }
+  .step-num {
+    width: 72px; height: 72px; border-radius: 50%; background: var(--card-bg);
+    border: 2px solid rgba(26,86,219,0.4); display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--blue);
+    margin: 0 auto 1.2rem; position: relative; z-index: 1;
   }
+  .step-card h4 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .step-card p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
 
-  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 2.5rem; }
-
-  .footer-brand p { color: var(--muted); font-size: .88rem; line-height: 1.7; margin: .8rem 0 1.2rem; }
-
-  .footer-col h4 { font-family: 'Syne', sans-serif; font-size: .9rem; font-weight: 700; margin-bottom: 1rem; }
-  .footer-col a { display: block; color: var(--muted); text-decoration: none; font-size: .85rem; margin-bottom: .6rem; transition: color .2s; }
-  .footer-col a:hover { color: var(--text); }
-
-  .footer-bottom {
-    border-top: 1px solid var(--border); padding-top: 1.2rem;
-    display: flex; align-items: center; justify-content: space-between;
-    font-size: .8rem; color: var(--muted);
+  /* WHY US */
+  .why { background: var(--dark); }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-top: 3rem; }
+  .why-features { display: flex; flex-direction: column; gap: 1.5rem; }
+  .feature-item { display: flex; gap: 1rem; align-items: flex-start; }
+  .feat-icon { width: 44px; height: 44px; min-width: 44px; border-radius: 10px; background: rgba(26,86,219,0.15); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+  .feat-text h4 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+  .feat-text p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; }
+  .why-visual {
+    background: var(--card-bg); border-radius: 24px; border: 1px solid var(--border);
+    padding: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem;
   }
+  .rating-row { display: flex; align-items: center; gap: 1rem; }
+  .big-rating { font-family: 'Syne', sans-serif; font-size: 4rem; font-weight: 800; color: var(--orange); line-height: 1; }
+  .stars { color: #FBBF24; font-size: 1.3rem; letter-spacing: 2px; }
+  .rating-count { color: var(--text-muted); font-size: 0.9rem; }
+  .mini-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .mini-stat { background: var(--dark); border-radius: 12px; padding: 1rem; }
+  .mini-stat .num { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--white); }
+  .mini-stat .lbl { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+  .review-item { background: var(--dark); border-radius: 12px; padding: 1rem; }
+  .review-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; }
+  .av-blue { background: rgba(26,86,219,0.3); color: #6B9EFF; }
+  .av-orange { background: rgba(255,107,43,0.3); color: var(--orange); }
+  .review-name { font-size: 0.9rem; font-weight: 600; }
+  .review-text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
 
-  /* ---- MODAL ---- */
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 200;
-    background: rgba(0,0,0,.7); backdrop-filter: blur(6px);
+  /* ENQUIRY FORM */
+  .enquiry { background: var(--dark2); }
+  .form-wrapper { max-width: 780px; margin: 3.5rem auto 0; background: var(--card-bg); border-radius: 24px; border: 1px solid var(--border); padding: 3rem; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label { font-size: 0.88rem; font-weight: 500; color: var(--text-muted); }
+  .form-group input, .form-group select, .form-group textarea {
+    background: var(--dark); border: 1px solid rgba(255,255,255,0.1);
+    color: var(--white); padding: 0.75rem 1rem; border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--blue); }
+  .form-group select option { background: var(--dark2); }
+  .form-group textarea { resize: vertical; min-height: 110px; }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(155,168,187,0.5); }
+  .form-submit {
+    grid-column: 1 / -1; background: var(--orange); color: var(--white);
+    border: none; padding: 1rem 2rem; border-radius: 10px; font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 0.5rem;
+  }
+  .form-submit:hover { background: #e55a1e; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,43,0.35); }
+  .form-note { text-align: center; color: var(--text-muted); font-size: 0.82rem; margin-top: 1rem; }
+  .success-msg { display: none; text-align: center; padding: 2rem; background: rgba(16,185,129,0.1); border-radius: 14px; border: 1px solid rgba(16,185,129,0.3); color: #34D399; font-size: 1rem; }
+
+  /* LOCATIONS / CONTACT */
+  .contact { background: var(--dark); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; margin-top: 3rem; }
+  .contact-info { display: flex; flex-direction: column; gap: 1.5rem; }
+  .contact-item { display: flex; gap: 1rem; align-items: flex-start; padding: 1.2rem; background: var(--card-bg); border-radius: 14px; border: 1px solid var(--border); }
+  .ci-icon { font-size: 1.3rem; margin-top: 2px; }
+  .ci-content h4 { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+  .ci-content p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.5; }
+  .ci-content a { color: var(--orange); text-decoration: none; }
+  .wa-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #25D366; color: var(--white); padding: 1rem 1.8rem;
+    border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 1rem;
+    transition: all 0.2s; border: none; cursor: pointer; width: fit-content;
+  }
+  .wa-btn:hover { background: #1fba59; transform: translateY(-2px); }
+  .map-placeholder { background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border); height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; }
+  .map-placeholder p { color: var(--text-muted); font-size: 0.9rem; }
+
+  /* FOOTER */
+  footer { background: var(--dark2); border-top: 1px solid var(--border); padding: 3rem 5% 2rem; }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 2.5rem; }
+  .footer-brand p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.7; margin-top: 0.8rem; max-width: 280px; }
+  .footer-col h5 { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-col ul li a { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+  .footer-col ul li a:hover { color: var(--white); }
+  .footer-bottom { border-top: 1px solid var(--border); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer-bottom p { color: var(--text-muted); font-size: 0.82rem; }
+
+  /* FLOATING WA */
+  .float-wa {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 99;
+    background: #25D366; width: 58px; height: 58px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    padding: 1rem;
-    opacity: 0; pointer-events: none; transition: opacity .2s;
+    font-size: 1.7rem; box-shadow: 0 8px 24px rgba(37,211,102,0.4);
+    text-decoration: none; transition: transform 0.2s;
   }
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .float-wa:hover { transform: scale(1.1); }
 
-  .modal {
-    background: var(--card-bg); border: 1px solid var(--border);
-    border-radius: 20px; padding: 2rem; width: 100%; max-width: 500px;
-    transform: scale(.95); transition: transform .2s;
-  }
-  .modal-overlay.open .modal { transform: scale(1); }
-
-  .modal-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 1.5rem; }
-  .modal-head h3 { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; }
-  .modal-close {
-    background: var(--surface2); border: none; color: var(--muted);
-    width: 32px; height: 32px; border-radius: 8px;
-    cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
-    transition: color .2s;
-  }
-  .modal-close:hover { color: var(--text); }
-
-  .modal-detail { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
-  .modal-icon { width: 64px; height: 64px; border-radius: 14px; font-size: 2rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .modal-info {}
-  .modal-model { font-size: .82rem; color: var(--muted); margin-bottom: .2rem; }
-  .modal-desc { font-size: .88rem; color: var(--muted); line-height: 1.6; }
-
-  .modal-prices {
-    display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-bottom: 1.5rem;
-  }
-
-  .price-box {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 12px; padding: 1rem; text-align: center;
-  }
-  .price-box-label { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .3rem; }
-  .price-box-val { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; }
-
-  /* ---- MOBILE NAV TOGGLE ---- */
-  .nav-toggle { display: none; background: none; border: none; color: var(--text); font-size: 1.4rem; cursor: pointer; }
-
+  /* MOBILE MENU */
   @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; padding: 60px 5vw 50px; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 64px; left: 0; right: 0; background: var(--dark2); padding: 2rem; gap: 1.5rem; border-bottom: 1px solid var(--border); }
     .hero-visual { display: none; }
-    .footer-grid { grid-template-columns: 1fr 1fr; }
-    nav { display: none; }
-    .nav-toggle { display: block; }
+    .why-grid, .contact-grid, .footer-top { grid-template-columns: 1fr; }
     .form-grid { grid-template-columns: 1fr; }
+    .form-group.full { grid-column: 1; }
+    .steps-grid::before { display: none; }
+    .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
   }
-
-  @media (max-width: 580px) {
-    .footer-grid { grid-template-columns: 1fr; }
-    .modal-prices { grid-template-columns: 1fr; }
-  }
-
-  /* Tabs */
-  .tabs { display: flex; gap: .5rem; margin-bottom: 2rem; flex-wrap: wrap; }
-  .tab-btn {
-    padding: .5rem 1.2rem; border-radius: 8px; border: 1.5px solid var(--border);
-    background: transparent; color: var(--muted);
-    font-family: 'DM Sans', sans-serif; font-size: .88rem; font-weight: 600;
-    cursor: pointer; transition: all .2s;
-  }
-  .tab-btn.active { background: var(--grad); color: #fff; border-color: transparent; }
-  .tab-btn:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
-
-  /* Inquiries Table */
-  .inquiries-table { width: 100%; border-collapse: collapse; }
-  .inquiries-table th, .inquiries-table td {
-    padding: .75rem 1rem; text-align: left; font-size: .85rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .inquiries-table th { color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: .72rem; letter-spacing: .06em; }
-  .inquiries-table tbody tr:hover { background: var(--surface); }
-  .status-badge {
-    display: inline-block; padding: .2rem .65rem; border-radius: 6px; font-size: .75rem; font-weight: 600;
-  }
-  .status-new { background: rgba(var(--accent-rgb),.12); color: var(--accent); }
-  .status-processing { background: rgba(var(--blue-rgb),.12); color: var(--blue); }
-  .status-done { background: rgba(var(--green-rgb),.12); color: var(--green); }
-
-  /* Scroll fade-in */
-  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .55s ease, transform .55s ease; }
-  .fade-in.visible { opacity: 1; transform: none; }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <a href="#" class="logo">⚙️ Mahadev</a>
-  <nav id="mainNav">
-    <a href="#parts">Parts</a>
-    <a href="#combos">Combos</a>
-    <a href="#query">Get Quote</a>
-    <!-- <a href="#inquiries">My Inquiries</a> -->
-    <a href="#contact">Contact</a>
-  </nav>
-  <div style="display:flex;gap:.7rem;align-items:center;">
-    <button id="themeToggleBtn" class="theme-toggle" aria-label="Toggle Theme">🌓</button>
-    <a href="#query" class="btn btn-primary">📋 Request Part</a>
-    <button class="nav-toggle" onclick="document.getElementById('mainNav').style.display = document.getElementById('mainNav').style.display === 'flex' ? 'none' : 'flex'; document.getElementById('mainNav').style.flexDirection='column'; document.getElementById('mainNav').style.position='absolute'; document.getElementById('mainNav').style.top='64px'; document.getElementById('mainNav').style.right='0'; document.getElementById('mainNav').style.background='var(--surface)'; document.getElementById('mainNav').style.padding='1rem 2rem'; document.getElementById('mainNav').style.borderBottom='1px solid var(--border)';">☰</button>
-  </div>
-</header>
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Fix<span>Zone</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#enquiry">Get Quote</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#enquiry" class="nav-cta">Book Repair</a>
+  <button class="hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-content fade-in visible">
-    <span class="hero-eyebrow">🔧 Mobile Repair Parts Store</span>
-    <h1>Original & Local<br><span>Parts at Best</span><br>Prices</h1>
-    <p>Compare original OEM and local market prices for all mobile repair parts. Submit your query and get the best deal on screens, batteries, combos and more.</p>
-    <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-      <a href="#parts" class="btn btn-primary" style="font-size:1rem;padding:.7rem 1.6rem;">🔍 Browse Parts</a>
-      <a href="#query" class="btn btn-ghost" style="font-size:1rem;padding:.7rem 1.6rem;">📝 Submit Query</a>
+  <div class="hero-content">
+    <div class="hero-badge">Trusted Mobile Repair Center</div>
+    <h1>We Fix <em>All Phones</em><br>Android & iPhone</h1>
+    <p>Professional repair services for all smartphone brands. Fast turnaround, genuine parts, and warranty on every repair — at your doorstep or walk in.</p>
+    <div class="hero-btns">
+      <a href="#enquiry" class="btn-primary">🔧 Book a Repair</a>
+      <a href="tel:+919876543210" class="btn-outline">📞 Call Now</a>
     </div>
     <div class="hero-stats">
-      <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Parts Available</div></div>
-      <div class="stat"><div class="stat-num">50+</div><div class="stat-label">Phone Models</div></div>
-      <div class="stat"><div class="stat-num">24hr</div><div class="stat-label">Quick Response</div></div>
+      <div><div class="stat-num">15,000+</div><div class="stat-label">Devices Repaired</div></div>
+      <div><div class="stat-num">4.9★</div><div class="stat-label">Google Rating</div></div>
+      <div><div class="stat-num">30 Min</div><div class="stat-label">Avg Repair Time</div></div>
     </div>
   </div>
-
   <div class="hero-visual">
-    <div class="mini-card">
-      <div class="mini-icon" style="background:rgba(var(--green-rgb),.1);">📱</div>
-      <div class="mini-card-info">
-        <div class="mini-card-name">iPhone 14 Display</div>
-        <div class="mini-card-sub">OLED Original</div>
-      </div>
-      <div class="price-pair">
-        <div class="price-orig">₹4,200</div>
-        <div class="price-local">Local: ₹2,800</div>
+    <div class="phone-mockup">
+      <div class="phone-screen">
+        <div class="phone-icon">📱</div>
+        <div class="phone-text">Your device,<br>repaired perfectly</div>
       </div>
     </div>
-    <div class="mini-card">
-      <div class="mini-icon" style="background:rgba(var(--blue-rgb),.1);">🔋</div>
-      <div class="mini-card-info">
-        <div class="mini-card-name">Samsung S23 Battery</div>
-        <div class="mini-card-sub">3900mAh Original</div>
-      </div>
-      <div class="price-pair">
-        <div class="price-orig">₹950</div>
-        <div class="price-local">Local: ₹550</div>
+    <div class="tool-card t1">
+      <div class="tc-icon tc-blue">🔋</div>
+      <div><div style="font-weight:600;font-size:0.82rem">Battery Replaced</div><div style="color:var(--text-muted);font-size:0.75rem">30 min service</div></div>
+    </div>
+    <div class="tool-card t2">
+      <div class="tc-icon tc-orange">🖥️</div>
+      <div><div style="font-weight:600;font-size:0.82rem">Screen Fixed</div><div style="color:var(--text-muted);font-size:0.75rem">OEM quality display</div></div>
+    </div>
+    <div class="tool-card t3">
+      <div class="tc-icon tc-green">✅</div>
+      <div><div style="font-weight:600;font-size:0.82rem">90-Day Warranty</div><div style="color:var(--text-muted);font-size:0.75rem">On all repairs</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<div class="brands">
+  <div class="brands-inner">
+    <span class="brand-label">We repair:</span>
+    <span class="brand-chip">Apple iPhone</span>
+    <span class="brand-chip">Samsung</span>
+    <span class="brand-chip">OnePlus</span>
+    <span class="brand-chip">Xiaomi / Redmi</span>
+    <span class="brand-chip">Oppo / Vivo</span>
+    <span class="brand-chip">Realme</span>
+    <span class="brand-chip">Google Pixel</span>
+    <span class="brand-chip">Motorola</span>
+    <span class="brand-chip">Nothing Phone</span>
+    <span class="brand-chip">+ All Brands</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-header">
+    <div class="section-tag">Our Services</div>
+    <h2 class="section-title">What We Repair</h2>
+    <p class="section-sub">From cracked screens to water damage — we handle every repair with precision and care using genuine quality parts.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon si-blue">📱</div>
+      <h3>Screen Replacement</h3>
+      <p>Cracked, broken, or unresponsive display? We replace screens with OEM-quality panels that look and feel like new.</p>
+      <div class="service-tags">
+        <span class="stag">LCD Repair</span><span class="stag">AMOLED</span><span class="stag">Touch Fix</span>
       </div>
     </div>
-    <div class="mini-card">
-      <div class="mini-icon" style="background:rgba(var(--accent-rgb),.1);">🎁</div>
-      <div class="mini-card-info">
-        <div class="mini-card-name">Redmi Display Combo</div>
-        <div class="mini-card-sub">With Frame + Touch</div>
+    <div class="service-card">
+      <div class="service-icon si-orange">🔋</div>
+      <h3>Battery Replacement</h3>
+      <p>Phone draining fast or not holding charge? We replace batteries in 30 minutes with high-capacity original cells.</p>
+      <div class="service-tags">
+        <span class="stag">Original Cells</span><span class="stag">Fast Service</span><span class="stag">All Models</span>
       </div>
-      <div class="price-pair">
-        <div class="price-orig">₹1,650</div>
-        <div class="price-local">Save ₹400</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon si-teal">💧</div>
+      <h3>Water Damage Repair</h3>
+      <p>Dropped your phone in water? Don't panic. Our technicians can recover water-damaged phones with advanced cleaning.</p>
+      <div class="service-tags">
+        <span class="stag">Ultrasonic Clean</span><span class="stag">Motherboard</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon si-purple">📷</div>
+      <h3>Camera Repair</h3>
+      <p>Blurry photos, camera not opening, or broken lens? We fix front and rear cameras for crystal-clear photos again.</p>
+      <div class="service-tags">
+        <span class="stag">Lens Replacement</span><span class="stag">OIS Fix</span><span class="stag">Flash</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon si-green">🔌</div>
+      <h3>Charging Port Fix</h3>
+      <p>Phone not charging or charging slowly? We repair or replace charging ports — Type-C, Lightning, and Micro USB.</p>
+      <div class="service-tags">
+        <span class="stag">USB-C</span><span class="stag">Lightning</span><span class="stag">Micro USB</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon si-red">⚙️</div>
+      <h3>Motherboard Repair</h3>
+      <p>Phone dead or not booting? Our expert technicians perform chip-level repairs for complex motherboard issues.</p>
+      <div class="service-tags">
+        <span class="stag">Chip Level</span><span class="stag">Dead Phones</span><span class="stag">IC Repair</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PARTS SECTION -->
-<section class="section" id="parts">
-  <div class="section-head fade-in">
-    <h2>🔩 Spare Parts Catalogue</h2>
-    <p>Find original OEM and quality local parts with transparent pricing</p>
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="section-header">
+    <div class="section-tag">Simple Process</div>
+    <h2 class="section-title">How It Works</h2>
+    <p class="section-sub">Getting your phone repaired is as easy as 1-2-3. We offer doorstep service, pickup/drop, or walk-in.</p>
   </div>
-
-  <div class="search-bar fade-in">
-    <select id="brandFilter" onchange="filterParts()">
-      <option value="">All Brands</option>
-      <option>Samsung</option>
-      <option>Apple iPhone</option>
-      <option>Redmi / Xiaomi</option>
-      <option>OnePlus</option>
-      <option>Realme</option>
-      <option>Vivo</option>
-      <option>Oppo</option>
-    </select>
-    <input type="text" id="searchInput" placeholder="Search part name or model…" oninput="filterParts()">
-    <button class="btn btn-primary" onclick="filterParts()">🔍 Search</button>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <h4>Submit Enquiry</h4>
+      <p>Fill our quick form with your device details and issue. We'll contact you within 30 minutes.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <h4>Get a Quote</h4>
+      <p>Our experts diagnose your device and share a transparent repair cost — no hidden charges.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <h4>Repair Done</h4>
+      <p>Sit back while our certified technicians fix your phone using genuine parts at your location or ours.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <h4>Collect & Pay</h4>
+      <p>Receive your repaired phone with a 90-day warranty. Pay via cash, card, or UPI.</p>
+    </div>
   </div>
-
-  <div class="tabs fade-in">
-    <button class="tab-btn active" onclick="filterCategory('all',this)">All Parts</button>
-    <button class="tab-btn" onclick="filterCategory('display',this)">📱 Displays</button>
-    <button class="tab-btn" onclick="filterCategory('battery',this)">🔋 Batteries</button>
-    <button class="tab-btn" onclick="filterCategory('charging',this)">⚡ Charging</button>
-    <button class="tab-btn" onclick="filterCategory('camera',this)">📷 Cameras</button>
-    <button class="tab-btn" onclick="filterCategory('speaker',this)">🔊 Speakers</button>
-    <button class="tab-btn" onclick="filterCategory('motherboard',this)">🖥️ Motherboard</button>
-  </div>
-
-  <div class="parts-grid" id="partsGrid"></div>
 </section>
 
-<!-- COMBOS SECTION -->
-<section class="section" id="combos" style="background:var(--surface);">
-  <div class="section-head fade-in">
-    <h2>🎁 Repair Combos</h2>
-    <p>Bundle parts together and save more on complete repair kits</p>
-  </div>
-  <div class="combos-grid" id="combosGrid"></div>
-</section>
-
-<!-- QUERY FORM -->
-<section class="section" id="query">
-  <div class="section-head fade-in">
-    <h2>📋 Submit Repair Query</h2>
-    <p>Tell us what you need — we'll get back with the best price</p>
-  </div>
-  <div class="form-wrap fade-in">
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Your Name *</label>
-        <input type="text" id="f_name" placeholder="Rahul Sharma">
-      </div>
-      <div class="form-group">
-        <label>Phone Number *</label>
-        <input type="tel" id="f_phone" placeholder="+91 98765 43210">
-      </div>
-      <div class="form-group">
-        <label>Mobile Brand *</label>
-        <select id="f_brand">
-          <option value="">Select Brand</option>
-          <option>Samsung</option>
-          <option>Apple iPhone</option>
-          <option>Redmi / Xiaomi</option>
-          <option>OnePlus</option>
-          <option>Realme</option>
-          <option>Vivo</option>
-          <option>Oppo</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Model Number *</label>
-        <input type="text" id="f_model" placeholder="e.g. Samsung Galaxy A54">
-      </div>
-      <div class="form-group full">
-        <label>Parts Required</label>
-        <div class="parts-selector" id="partsSelector">
-          <div class="parts-chip" onclick="toggleChip(this)">📱 Display</div>
-          <div class="parts-chip" onclick="toggleChip(this)">🔋 Battery</div>
-          <div class="parts-chip" onclick="toggleChip(this)">⚡ Charging Port</div>
-          <div class="parts-chip" onclick="toggleChip(this)">📷 Camera</div>
-          <div class="parts-chip" onclick="toggleChip(this)">🔊 Speaker</div>
-          <div class="parts-chip" onclick="toggleChip(this)">🎙️ Mic</div>
-          <div class="parts-chip" onclick="toggleChip(this)">🔘 Power Button</div>
-          <div class="parts-chip" onclick="toggleChip(this)">📲 Volume Button</div>
-          <div class="parts-chip" onclick="toggleChip(this)">🖥️ Motherboard</div>
-          <div class="parts-chip" onclick="toggleChip(this)">🏠 Back Cover</div>
-          <div class="parts-chip" onclick="toggleChip(this)">🎁 Full Combo</div>
-          <div class="parts-chip" onclick="toggleChip(this)">🔧 Other</div>
+<!-- WHY US -->
+<section class="why" id="why">
+  <div class="why-grid">
+    <div>
+      <div class="section-tag">Why Choose Us</div>
+      <h2 class="section-title">Repair You Can<br>Actually Trust</h2>
+      <p class="section-sub">We've earned the trust of 15,000+ customers with quality repairs, honest pricing, and real warranties.</p>
+      <div class="why-features" style="margin-top:2rem">
+        <div class="feature-item">
+          <div class="feat-icon">🛡️</div>
+          <div class="feat-text">
+            <h4>90-Day Repair Warranty</h4>
+            <p>Every repair comes with a 90-day warranty. If it breaks again for the same reason, we fix it free.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feat-icon">⚡</div>
+          <div class="feat-text">
+            <h4>Same-Day Service</h4>
+            <p>Most common repairs like screen and battery are done within 30–60 minutes at our service center.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feat-icon">🏠</div>
+          <div class="feat-text">
+            <h4>Doorstep Repair Available</h4>
+            <p>Our technician comes to your home or office for simpler repairs. No need to travel.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feat-icon">💰</div>
+          <div class="feat-text">
+            <h4>Transparent Pricing</h4>
+            <p>No surprise bills. You get the exact quote before work starts — and only pay if you approve it.</p>
+          </div>
         </div>
       </div>
-      <div class="form-group">
-        <label>Part Type Preferred</label>
-        <select id="f_type">
-          <option value="">No Preference</option>
-          <option value="original">Original / OEM</option>
-          <option value="local">Local / Compatible</option>
-          <option value="both">Show Both Prices</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Budget Range</label>
-        <select id="f_budget">
-          <option value="">No Limit</option>
-          <option>Under ₹500</option>
-          <option>₹500 – ₹1,000</option>
-          <option>₹1,000 – ₹2,500</option>
-          <option>₹2,500 – ₹5,000</option>
-          <option>Above ₹5,000</option>
-        </select>
-      </div>
-      <div class="form-group full">
-        <label>Additional Details / Issue Description</label>
-        <textarea id="f_desc" placeholder="Describe the problem or any special requirement…"></textarea>
-      </div>
     </div>
-    <div class="form-submit">
-      <button class="btn btn-primary" onclick="submitQuery()" style="font-size:1rem;padding:.8rem 2.5rem;border-radius:10px;">
-        🚀 Submit Query
-      </button>
-      <p style="color:var(--muted);font-size:.8rem;margin-top:.8rem;">We'll respond within 24 hours via WhatsApp or call</p>
+    <div class="why-visual">
+      <div class="rating-row">
+        <div class="big-rating">4.9</div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div class="rating-count" style="margin-top:4px">2,400+ Google Reviews</div>
+        </div>
+      </div>
+      <div class="mini-stat-grid">
+        <div class="mini-stat"><div class="num">15K+</div><div class="lbl">Devices Repaired</div></div>
+        <div class="mini-stat"><div class="num">50+</div><div class="lbl">Expert Technicians</div></div>
+        <div class="mini-stat"><div class="num">30 min</div><div class="lbl">Avg Repair Time</div></div>
+        <div class="mini-stat"><div class="num">98%</div><div class="lbl">Success Rate</div></div>
+      </div>
+      <div class="review-item">
+        <div class="review-meta">
+          <div class="avatar av-blue">RS</div>
+          <div class="review-name">Ravi Sharma</div>
+          <div style="color:#FBBF24;font-size:0.75rem">★★★★★</div>
+        </div>
+        <div class="review-text">"Got my Samsung S23 screen replaced in 45 minutes. Quality is amazing and price was very fair. Highly recommend!"</div>
+      </div>
+      <div class="review-item">
+        <div class="review-meta">
+          <div class="avatar av-orange">PK</div>
+          <div class="review-name">Priya Kumari</div>
+          <div style="color:#FBBF24;font-size:0.75rem">★★★★★</div>
+        </div>
+        <div class="review-text">"They came to my home to fix my iPhone battery. So convenient! 90-day warranty gives me peace of mind."</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- INQUIRIES -->
-<!-- <section class="section" id="inquiries" style="background:var(--surface);">
-  <div class="section-head fade-in">
-    <h2>📁 Submitted Inquiries</h2>
-    <p>Track the status of your repair part queries</p>
+<!-- ENQUIRY FORM -->
+<section class="enquiry" id="enquiry">
+  <div class="section-header">
+    <div class="section-tag">Get a Free Quote</div>
+    <h2 class="section-title">Book Your Repair</h2>
+    <p class="section-sub">Fill in the details below and our team will contact you within 30 minutes with a free diagnosis and quote.</p>
   </div>
-  <div style="background:var(--card-bg);border:1px solid var(--border);border-radius:16px;overflow:auto;" class="fade-in">
-    <table class="inquiries-table" id="inquiryTable">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Model</th>
-          <th>Parts</th>
-          <th>Type</th>
-          <th>Date</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="inquiryBody">
-        <tr><td colspan="8" style="text-align:center;color:var(--muted);padding:2rem;">No inquiries yet. Submit your first query above.</td></tr>
-      </tbody>
-    </table>
+  <div class="form-wrapper">
+    <div id="enquiryForm" class="form-grid">
+      <div class="form-group">
+        <label>Full Name *</label>
+        <input type="text" id="fname" placeholder="Your full name" required>
+      </div>
+      <div class="form-group">
+        <label>Mobile Number *</label>
+        <input type="tel" id="fphone" placeholder="+91 98765 43210" required>
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="femail" placeholder="yourname@email.com">
+      </div>
+      <div class="form-group">
+        <label>Your City *</label>
+        <input type="text" id="fcity" placeholder="e.g., Delhi, Mumbai, Bangalore" required>
+      </div>
+      <div class="form-group">
+        <label>Device Brand *</label>
+        <select id="fbrand" required>
+          <option value="">Select Brand</option>
+          <optgroup label="iPhone / Apple">
+            <option>Apple iPhone</option>
+          </optgroup>
+          <optgroup label="Android Brands">
+            <option>Samsung</option>
+            <option>OnePlus</option>
+            <option>Xiaomi / Redmi</option>
+            <option>Realme</option>
+            <option>Oppo</option>
+            <option>Vivo</option>
+            <option>Google Pixel</option>
+            <option>Motorola</option>
+            <option>Nothing Phone</option>
+            <option>Poco</option>
+            <option>Asus ROG</option>
+            <option>Other Brand</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Device Model *</label>
+        <input type="text" id="fmodel" placeholder="e.g., iPhone 15, Galaxy S24" required>
+      </div>
+      <div class="form-group">
+        <label>Issue / Problem *</label>
+        <select id="fissue" required>
+          <option value="">Select Issue</option>
+          <option>Cracked / Broken Screen</option>
+          <option>Battery Draining Fast</option>
+          <option>Phone Not Charging</option>
+          <option>Water Damage</option>
+          <option>Camera Not Working</option>
+          <option>Phone Not Turning On</option>
+          <option>Speaker / Mic Issue</option>
+          <option>Overheating</option>
+          <option>Motherboard Issue</option>
+          <option>Software Problem</option>
+          <option>Other Issue</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Preferred Service</label>
+        <select id="fservice">
+          <option>Doorstep Repair (Technician comes to you)</option>
+          <option>Pickup & Delivery</option>
+          <option>Walk-in to Service Center</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Additional Details</label>
+        <textarea id="fdesc" placeholder="Describe the problem in more detail — how it happened, what you've tried, etc."></textarea>
+      </div>
+      <button class="form-submit" onclick="submitForm()">🔧 Submit Repair Request — Get Free Quote</button>
+    </div>
+    <div class="success-msg" id="successMsg">
+      ✅ <strong>Request Submitted!</strong><br><br>
+      Thank you! Our team will call you within 30 minutes with a free diagnosis and repair quote.<br><br>
+      You can also WhatsApp us directly for faster response.
+    </div>
+    <p class="form-note">🔒 Your information is kept private. We'll never share your details with anyone.</p>
   </div>
-</section> -->
+</section>
 
 <!-- CONTACT -->
-<section class="section" id="contact">
-  <div class="section-head fade-in">
-    <h2>📞 Contact Us</h2>
-    <p>Reach out via any channel — we're here to help</p>
+<section class="contact" id="contact">
+  <div class="section-header">
+    <div class="section-tag">Contact & Location</div>
+    <h2 class="section-title">Find Us or Call Us</h2>
+    <p class="section-sub">Visit our service center or get doorstep repairs anywhere in your city.</p>
   </div>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;max-width:900px;margin:0 auto;" class="fade-in">
-    <div class="part-card" style="text-align:center;cursor:default;">
-      <div style="font-size:2.5rem;margin-bottom:.8rem;">📱</div>
-      <div style="font-weight:700;margin-bottom:.3rem;">WhatsApp</div>
-      <div style="color:var(--muted);font-size:.88rem;">+91 9927768546</div>
-      <a href="https://wa.me/9927768546" target="_blank" class="btn btn-primary" style="margin-top:1rem;justify-content:center;">Chat Now</a>
+  <div class="contact-grid" style="margin-top:3rem">
+    <div class="contact-info">
+      <div class="contact-item">
+        <div class="ci-icon">📍</div>
+        <div class="ci-content">
+          <h4>Service Center Address</h4>
+          <p>Shop No. 12, Main Market, Sector 5<br>Your City — 110001</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-icon">📞</div>
+        <div class="ci-content">
+          <h4>Phone / WhatsApp</h4>
+          <p><a href="tel:+919876543210">+91 98765 43210</a><br><a href="tel:+919876543211">+91 98765 43211</a></p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-icon">⏰</div>
+        <div class="ci-content">
+          <h4>Working Hours</h4>
+          <p>Monday – Saturday: 9:00 AM – 8:00 PM<br>Sunday: 10:00 AM – 6:00 PM</p>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="ci-icon">📧</div>
+        <div class="ci-content">
+          <h4>Email Us</h4>
+          <p><a href="mailto:support@fixzoneindia.in">support@fixzoneindia.in</a></p>
+        </div>
+      </div>
+      <a href="https://wa.me/919876543210?text=Hi%2C%20I%20need%20phone%20repair%20help" class="wa-btn" target="_blank">
+        💬 Chat on WhatsApp
+      </a>
     </div>
-    <div class="part-card" style="text-align:center;cursor:default;">
-      <div style="font-size:2.5rem;margin-bottom:.8rem;">📧</div>
-      <div style="font-weight:700;margin-bottom:.3rem;">Email</div>
-      <div style="color:var(--muted);font-size:.88rem;">yakku38@gmail.com</div>
-      <a href="mailto:yakku38@gmail.com" class="btn btn-ghost" style="margin-top:1rem;justify-content:center;">Send Mail</a>
-    </div>
-    <div class="part-card" style="text-align:center;cursor:default;">
-      <div style="font-size:2.5rem;margin-bottom:.8rem;">📍</div>
-      <div style="font-weight:700;margin-bottom:.3rem;">Shop Address</div>
-      <div style="color:var(--muted);font-size:.88rem;">123 Mobile Market,<br>Main Bazaar, Kichha, UK</div>
-      <a href="https://maps.google.com" target="_blank" class="btn btn-ghost" style="margin-top:1rem;justify-content:center;">Get Directions</a>
-    </div>
-    <div class="part-card" style="text-align:center;cursor:default;">
-      <div style="font-size:2.5rem;margin-bottom:.8rem;">⏰</div>
-      <div style="font-weight:700;margin-bottom:.3rem;">Working Hours</div>
-      <div style="color:var(--muted);font-size:.88rem;">Mon–Sat: 9AM – 8PM<br>Sunday: 10AM – 6PM</div>
+    <div class="map-placeholder">
+      <div style="font-size:3rem">🗺️</div>
+      <p>Google Map will appear here</p>
+      <p style="font-size:0.8rem;color:rgba(155,168,187,0.5)">Add your Google Maps embed iframe</p>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-grid">
+  <div class="footer-top">
     <div class="footer-brand">
-      <a href="#" class="logo">⚙️ Mahadev</a>
-      <p>Your trusted partner for original and local mobile repair parts. Best prices, fast delivery, honest service.</p>
-      <div style="display:flex;gap:.6rem;">
-        <a href="#" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.45rem .7rem;color:var(--muted);text-decoration:none;font-size:.85rem;">📘 Facebook</a>
-        <a href="#" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.45rem .7rem;color:var(--muted);text-decoration:none;font-size:.85rem;">📸 Instagram</a>
-      </div>
+      <a href="#" class="logo">Fix<span>Zone</span></a>
+      <p>Your trusted mobile repair partner. We fix all Android and iPhone devices with genuine parts and a 90-day warranty.</p>
     </div>
     <div class="footer-col">
-      <h4>Parts</h4>
-      <a href="#">Displays & Screens</a>
-      <a href="#">Batteries</a>
-      <a href="#">Charging Ports</a>
-      <a href="#">Cameras</a>
-      <a href="#">Speakers & Mics</a>
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#">Screen Repair</a></li>
+        <li><a href="#">Battery Replacement</a></li>
+        <li><a href="#">Water Damage</a></li>
+        <li><a href="#">Camera Repair</a></li>
+        <li><a href="#">Charging Port</a></li>
+        <li><a href="#">Motherboard Repair</a></li>
+      </ul>
     </div>
     <div class="footer-col">
-      <h4>Brands</h4>
-      <a href="#">Samsung</a>
-      <a href="#">Apple iPhone</a>
-      <a href="#">Redmi / Xiaomi</a>
-      <a href="#">OnePlus</a>
-      <a href="#">Realme / Vivo</a>
+      <h5>Brands</h5>
+      <ul>
+        <li><a href="#">iPhone Repair</a></li>
+        <li><a href="#">Samsung Repair</a></li>
+        <li><a href="#">OnePlus Repair</a></li>
+        <li><a href="#">Xiaomi Repair</a></li>
+        <li><a href="#">Oppo / Vivo</a></li>
+        <li><a href="#">Google Pixel</a></li>
+      </ul>
     </div>
     <div class="footer-col">
-      <h4>Support</h4>
-      <a href="#query">Submit Query</a>
-      <a href="#inquiries">Track Order</a>
-      <a href="#contact">Contact</a>
-      <a href="#">Return Policy</a>
-      <a href="#">Warranty Info</a>
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Book Repair</a></li>
+        <li><a href="#">Track Repair</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 Mahadev. All rights reserved.</span>
-    <span>Made with ❤️ for repair professionals</span>
+    <p>© 2025 FixZone India. All rights reserved.</p>
+    <p>Made with ❤️ for phone repair customers across India</p>
   </div>
 </footer>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="modal" onclick="closeModal(event)">
-  <div class="modal">
-    <div class="modal-head">
-      <h3 id="modalTitle">Part Details</h3>
-      <button class="modal-close" onclick="document.getElementById('modal').classList.remove('open')">✕</button>
-    </div>
-    <div class="modal-detail">
-      <div class="modal-icon" id="modalIcon"></div>
-      <div class="modal-info">
-        <div class="modal-model" id="modalModel"></div>
-        <div style="font-weight:700;font-size:1.05rem;margin-bottom:.3rem;" id="modalName"></div>
-        <div class="modal-desc" id="modalDesc"></div>
-      </div>
-    </div>
-    <div class="modal-prices">
-      <div class="price-box">
-        <div class="price-box-label">✅ Original / OEM</div>
-        <div class="price-box-val" id="modalOrig" style="color:var(--green);"></div>
-      </div>
-      <div class="price-box">
-        <div class="price-box-label">🔵 Local / Compatible</div>
-        <div class="price-box-val" id="modalLocal" style="color:var(--blue);"></div>
-      </div>
-    </div>
-    <div style="display:flex;gap:.7rem;">
-      <a href="#query" class="btn btn-primary" style="flex:1;justify-content:center;" onclick="document.getElementById('modal').classList.remove('open')">📋 Request This Part</a>
-      <a id="modalWhatsApp" href="#" target="_blank" class="btn btn-ghost" style="flex:1;justify-content:center;">💬 WhatsApp</a>
-    </div>
-  </div>
-</div>
-
-<!-- TOAST -->
-<div class="toast" id="toast">✅ Query submitted! We'll contact you soon.</div>
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/919876543210?text=Hi%2C%20I%20need%20phone%20repair%20help" class="float-wa" target="_blank" title="WhatsApp Us">💬</a>
 
 <script>
-// ============ DATA ============
-const partsData = [
-  { id:1, name:"Display + Touch (AMOLED)", model:"Samsung Galaxy A54", brand:"Samsung", category:"display", icon:"📱", bg:"rgba(var(--green-rgb),.12)", orig:"₹2,800", local:"₹1,500", desc:"Full AMOLED display assembly with digitizer. OEM grade quality." },
-  { id:2, name:"Battery (5000mAh)", model:"Samsung Galaxy A54", brand:"Samsung", category:"battery", icon:"🔋", bg:"rgba(var(--blue-rgb),.12)", orig:"₹850", local:"₹480", desc:"Original capacity Li-ion battery. 300+ charge cycles." },
-  { id:3, name:"OLED Display (Original)", model:"iPhone 14", brand:"Apple iPhone", category:"display", icon:"📱", bg:"rgba(var(--accent-rgb),.12)", orig:"₹4,200", local:"₹2,600", desc:"OEM OLED screen with True Tone support. Includes adhesive." },
-  { id:4, name:"Battery (3279mAh)", model:"iPhone 13", brand:"Apple iPhone", category:"battery", icon:"🔋", bg:"rgba(var(--green-rgb),.12)", orig:"₹1,100", local:"₹680", desc:"High-quality replacement battery. Battery health 100%." },
-  { id:5, name:"Charging Port Flex", model:"Redmi Note 12", brand:"Redmi / Xiaomi", category:"charging", icon:"⚡", bg:"rgba(var(--accent2-rgb),.12)", orig:"₹320", local:"₹180", desc:"USB-C charging port with mic and antenna cable." },
-  { id:6, name:"Back Camera Module", model:"OnePlus 11R", brand:"OnePlus", category:"camera", icon:"📷", bg:"rgba(var(--blue-rgb),.12)", orig:"₹1,800", local:"₹1,100", desc:"Triple camera assembly. Compatible OEM sensor." },
-  { id:7, name:"Loud Speaker", model:"Realme Narzo 60", brand:"Realme", category:"speaker", icon:"🔊", bg:"rgba(var(--accent-rgb),.12)", orig:"₹350", local:"₹190", desc:"Buzzer/ringer replacement. Clear audio output." },
-  { id:8, name:"Display (IPS LCD)", model:"Vivo Y100", brand:"Vivo", category:"display", icon:"📱", bg:"rgba(var(--green-rgb),.12)", orig:"₹1,600", local:"₹950", desc:"IPS LCD panel with touch digitizer. Full assembly." },
-  { id:9, name:"Charging Port + Mic", model:"Oppo Reno 8", brand:"Oppo", category:"charging", icon:"⚡", bg:"rgba(var(--accent2-rgb),.12)", orig:"₹280", local:"₹160", desc:"Charging dock flex with microphone. USB-C." },
-  { id:10, name:"Front Camera", model:"Samsung Galaxy M34", brand:"Samsung", category:"camera", icon:"📷", bg:"rgba(var(--blue-rgb),.12)", orig:"₹420", local:"₹260", desc:"13MP front selfie camera flex module." },
-  { id:11, name:"Earpiece Speaker", model:"iPhone 12", brand:"Apple iPhone", category:"speaker", icon:"🔊", bg:"rgba(var(--accent-rgb),.12)", orig:"₹650", local:"₹380", desc:"Top earpiece speaker. Clear call audio." },
-  { id:12, name:"Motherboard (2+32GB)", model:"Redmi 10C", brand:"Redmi / Xiaomi", category:"motherboard", icon:"🖥️", bg:"rgba(var(--green-rgb),.12)", orig:"₹3,200", local:"₹2,100", desc:"Working board. 2GB RAM + 32GB storage." },
-];
+function submitForm() {
+  const name = document.getElementById('fname').value.trim();
+  const phone = document.getElementById('fphone').value.trim();
+  const city = document.getElementById('fcity').value.trim();
+  const brand = document.getElementById('fbrand').value;
+  const model = document.getElementById('fmodel').value.trim();
+  const issue = document.getElementById('fissue').value;
 
-const combosData = [
-  {
-    id:1, name:"Samsung A54 Full Repair Kit", badge:"Best Value",
-    items:["AMOLED Display + Touch", "5000mAh Battery", "Charging Port Flex", "Back Camera Glass"],
-    totalOrig:"₹4,200", totalLocal:"₹2,600", savings:"Save ₹800",
-    icon:"📱"
-  },
-  {
-    id:2, name:"iPhone 13 Screen + Battery Combo", badge:"Popular",
-    items:["OLED Display Assembly", "3279mAh Battery", "Adhesive Strip Set"],
-    totalOrig:"₹5,100", totalLocal:"₹3,100", savings:"Save ₹1,100",
-    icon:"🍎"
-  },
-  {
-    id:3, name:"Redmi Note 12 Complete Kit", badge:"Budget Friendly",
-    items:["LCD Display + Touch", "5000mAh Battery", "USB-C Charging Port", "Speaker Module"],
-    totalOrig:"₹2,400", totalLocal:"₹1,350", savings:"Save ₹600",
-    icon:"🔴"
-  },
-  {
-    id:4, name:"OnePlus 11R Camera Combo", badge:"Premium",
-    items:["Triple Rear Camera", "Front Camera", "Camera Glass"],
-    totalOrig:"₹2,900", totalLocal:"₹1,850", savings:"Save ₹450",
-    icon:"📷"
-  },
-];
-
-let inquiries = [];
-let activeCategory = 'all';
-
-// ============ RENDER PARTS ============
-function renderParts(data) {
-  const grid = document.getElementById('partsGrid');
-  if (!data.length) {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:3rem;">No parts found. Try a different search.</div>';
+  if (!name || !phone || !city || !brand || !model || !issue) {
+    alert('Please fill in all required fields (marked with *)');
     return;
   }
-  grid.innerHTML = data.map(p => `
-    <div class="part-card fade-in" onclick="openModal(${p.id})">
-      <div class="part-top">
-        <div class="part-icon" style="background:${p.bg}">${p.icon}</div>
-        <span class="badge badge-original">OEM Available</span>
-      </div>
-      <div class="part-name">${p.name}</div>
-      <div class="part-model">${p.model}</div>
-      <div class="price-row">
-        <div class="price-block">
-          <div class="price-label">Original</div>
-          <div class="price-value orig">${p.orig}</div>
-        </div>
-        <div class="price-block">
-          <div class="price-label">Local</div>
-          <div class="price-value local">${p.local}</div>
-        </div>
-      </div>
-      <div class="part-actions">
-        <button class="btn btn-primary" onclick="event.stopPropagation();quickQuery('${p.name}','${p.model}')">📋 Query</button>
-        <button class="btn btn-ghost" onclick="event.stopPropagation();whatsapp('${p.name}','${p.model}')">💬 WA</button>
-      </div>
-    </div>
-  `).join('');
-  observeFadeIns();
-}
-
-// ============ FILTER ============
-function filterParts() {
-  const brand = document.getElementById('brandFilter').value.toLowerCase();
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  let filtered = partsData.filter(p => {
-    const matchBrand = !brand || p.brand.toLowerCase().includes(brand);
-    const matchQ = !q || p.name.toLowerCase().includes(q) || p.model.toLowerCase().includes(q);
-    const matchCat = activeCategory === 'all' || p.category === activeCategory;
-    return matchBrand && matchQ && matchCat;
-  });
-  renderParts(filtered);
-}
-
-function filterCategory(cat, btn) {
-  activeCategory = cat;
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  filterParts();
-}
-
-// ============ RENDER COMBOS ============
-function renderCombos() {
-  document.getElementById('combosGrid').innerHTML = combosData.map(c => `
-    <div class="combo-card fade-in">
-      <div class="combo-header">
-        <div>
-          <div class="combo-name">${c.icon} ${c.name}</div>
-          <div class="combo-count">${c.items.length} parts included</div>
-        </div>
-        <span class="badge badge-combo">${c.badge}</span>
-      </div>
-      <div class="combo-body">
-        <ul class="combo-items">
-          ${c.items.map(i => `<li>${i}</li>`).join('')}
-        </ul>
-        <div class="combo-price-row">
-          <div class="combo-total">
-            <div class="combo-total-label">Original Price</div>
-            <div class="combo-total-val">${c.totalOrig}</div>
-            <div style="font-size:.75rem;color:var(--blue);">Local: ${c.totalLocal}</div>
-          </div>
-          <div>
-            <div class="combo-savings">${c.savings}</div>
-            <button class="btn btn-primary" style="margin-top:.5rem;font-size:.82rem;" onclick="quickQuery('${c.name} Combo','')">📋 Request</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `).join('');
-  observeFadeIns();
-}
-
-// ============ MODAL ============
-function openModal(id) {
-  const p = partsData.find(x => x.id === id);
-  if (!p) return;
-  document.getElementById('modalTitle').textContent = p.name;
-  document.getElementById('modalIcon').textContent = p.icon;
-  document.getElementById('modalIcon').style.background = p.bg;
-  document.getElementById('modalModel').textContent = p.model;
-  document.getElementById('modalName').textContent = p.brand;
-  document.getElementById('modalDesc').textContent = p.desc;
-  document.getElementById('modalOrig').textContent = p.orig;
-  document.getElementById('modalLocal').textContent = p.local;
-  document.getElementById('modalWhatsApp').href = `https://wa.me/9927768546?text=Hi! I need ${encodeURIComponent(p.name)} for ${encodeURIComponent(p.model)}`;
-  document.getElementById('modal').classList.add('open');
-}
-
-function closeModal(e) {
-  if (e.target === document.getElementById('modal')) document.getElementById('modal').classList.remove('open');
-}
-
-// ============ QUERY FORM ============
-function toggleChip(el) { el.classList.toggle('selected'); }
-
-function quickQuery(part, model) {
-  document.getElementById('f_model').value = model;
-  document.querySelectorAll('.parts-chip').forEach(c => {
-    if (part.toLowerCase().includes(c.textContent.replace(/[^a-z ]/gi,'').trim().toLowerCase()) ||
-        c.textContent.includes('🎁')) c.classList.add('selected');
-  });
-  document.getElementById('query').scrollIntoView({behavior:'smooth'});
-}
-
-function submitQuery() {
-  const name = document.getElementById('f_name').value.trim();
-  const phone = document.getElementById('f_phone').value.trim();
-  const brand = document.getElementById('f_brand').value;
-  const model = document.getElementById('f_model').value.trim();
-
-  if (!name || !phone || !brand || !model) {
-    alert('Please fill in Name, Phone, Brand and Model fields.');
+  if (!/^[\+\d\s\-]{8,15}$/.test(phone)) {
+    alert('Please enter a valid mobile number.');
     return;
   }
 
-  const selected = [...document.querySelectorAll('.parts-chip.selected')].map(c => c.textContent.replace(/[^\w\s&\/]/g,'').trim()).join(', ') || 'Not specified';
-  const type = document.getElementById('f_type').value || '-';
-  const budget = document.getElementById('f_budget').value || '-';
-  const desc = document.getElementById('f_desc').value.trim();
-
-  const inquiry = {
-    id: inquiries.length + 1,
-    name, phone, brand, model, parts: selected, type, budget, desc,
-    date: new Date().toLocaleDateString('en-IN'),
-    status: 'new'
-  };
-
-  inquiries.push(inquiry);
-  renderInquiries();
-  showToast();
-  resetForm();
-  document.getElementById('inquiries').scrollIntoView({behavior:'smooth'});
+  document.getElementById('enquiryForm').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
 }
-
-function resetForm() {
-  ['f_name','f_phone','f_model','f_desc'].forEach(id => document.getElementById(id).value = '');
-  ['f_brand','f_type','f_budget'].forEach(id => document.getElementById(id).value = '');
-  document.querySelectorAll('.parts-chip.selected').forEach(c => c.classList.remove('selected'));
-}
-
-function renderInquiries() {
-  const tbody = document.getElementById('inquiryBody');
-  if (!inquiries.length) {
-    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:2rem;">No inquiries yet.</td></tr>';
-    return;
-  }
-  tbody.innerHTML = inquiries.map(i => `
-    <tr>
-      <td>#${i.id}</td>
-      <td>${i.name}</td>
-      <td>${i.phone}</td>
-      <td>${i.brand} – ${i.model}</td>
-      <td style="max-width:160px;font-size:.8rem;">${i.parts}</td>
-      <td>${i.type}</td>
-      <td>${i.date}</td>
-      <td><span class="status-badge status-${i.status}">${i.status === 'new' ? '🆕 New' : i.status === 'processing' ? '⏳ Processing' : '✅ Done'}</span></td>
-    </tr>
-  `).join('');
-}
-
-// ============ WHATSAPP ============
-function whatsapp(part, model) {
-  window.open(`https://wa.me/9927768546?text=Hi! I need ${encodeURIComponent(part)} for ${encodeURIComponent(model)}. Please share the price.`, '_blank');
-}
-
-// ============ TOAST ============
-function showToast() {
-  const t = document.getElementById('toast');
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3500);
-}
-
-// ============ SCROLL ANIMATION ============
-function observeFadeIns() {
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.fade-in:not(.visible)').forEach(el => obs.observe(el));
-}
-
-// ============ THEME ============
-const themeToggleBtn = document.getElementById('themeToggleBtn');
-const currentTheme = localStorage.getItem('theme') || 'light';
-if (currentTheme === 'dark') document.body.classList.add('dark-theme');
-
-themeToggleBtn.addEventListener('click', () => {
-  document.body.classList.toggle('dark-theme');
-  const theme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
-  localStorage.setItem('theme', theme);
-});
-
-// ============ INIT ============
-renderParts(partsData);
-renderCombos();
-observeFadeIns();
 </script>
 </body>
 </html>
